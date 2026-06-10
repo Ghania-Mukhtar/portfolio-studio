@@ -1,0 +1,400 @@
+@import "tailwindcss";
+
+/* ============================================================
+   DESIGN TOKENS  -  the whole site reads from these variables.
+   To add a theme: copy a [data-theme="..."] block, rename it,
+   change the values. Nothing else needs to change.
+   See lib/themes.ts to register it in the switcher.
+   ============================================================ */
+
+/* Map our CSS variables onto Tailwind utilities so you can write
+   bg-bg, text-fg, text-fg-muted, border-line, bg-accent, etc. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-edge: var(--accent-edge);
+  --color-line: var(--border);
+  --color-hairline: var(--hairline);
+
+  --font-display: var(--font-bricolage);
+  --font-body: var(--font-inter-tight);
+  --font-mono: var(--font-jetbrains);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---- Theme: Cinematic (default) - near-black, bone text, champagne accent ---- */
+:root,
+[data-theme="cinematic"] {
+  --bg: #0b0b0c;
+  --bg-elev: #141416;
+  --surface: #161619;
+  --fg: #ece9e1;
+  --fg-muted: #9a988f;
+  --fg-faint: #6a6862;
+  --accent: #c2a878;
+  --accent-fg: #0b0b0c;
+  --accent-edge: #7d6738;
+  --border: rgba(236, 233, 225, 0.1);
+  --hairline: rgba(236, 233, 225, 0.07);
+  --btn-shadow: rgba(0, 0, 0, 0.55);
+  color-scheme: dark;
+}
+
+/* ---- Theme: Editorial - warm paper, ink text, terracotta accent ---- */
+[data-theme="editorial"] {
+  --bg: #f3f0e9;
+  --bg-elev: #ece8df;
+  --surface: #fbf9f4;
+  --fg: #1a1916;
+  --fg-muted: #57544c;
+  --fg-faint: #8b877c;
+  --accent: #9e4a2e;
+  --accent-fg: #fbf9f4;
+  --accent-edge: #6f3320;
+  --border: rgba(26, 25, 22, 0.12);
+  --hairline: rgba(26, 25, 22, 0.08);
+  --btn-shadow: rgba(26, 25, 22, 0.22);
+  color-scheme: light;
+}
+
+/* ---- Theme: Mono - stark off-white + off-black, zero color ---- */
+[data-theme="mono"] {
+  --bg: #fafaf8;
+  --bg-elev: #f1f1ef;
+  --surface: #ffffff;
+  --fg: #111111;
+  --fg-muted: #5a5a58;
+  --fg-faint: #8a8a88;
+  --accent: #111111;
+  --accent-fg: #fafaf8;
+  --accent-edge: #000000;
+  --border: rgba(17, 17, 17, 0.14);
+  --hairline: rgba(17, 17, 17, 0.08);
+  --btn-shadow: rgba(17, 17, 17, 0.28);
+  color-scheme: light;
+}
+
+/* ---- Theme: Royal - deep indigo/plum, ivory text, gold accent ---- */
+[data-theme="royal"] {
+  --bg: #0f0c1d;
+  --bg-elev: #171331;
+  --surface: #1b1636;
+  --fg: #ece8f6;
+  --fg-muted: #a7a0c0;
+  --fg-faint: #6f6892;
+  --accent: #c9a24b;
+  --accent-fg: #0f0c1d;
+  --accent-edge: #8a6e2e;
+  --border: rgba(236, 232, 246, 0.1);
+  --hairline: rgba(236, 232, 246, 0.07);
+  --btn-shadow: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+/* ---- Theme: Pastel - soft warm light, slate text, muted rose accent ---- */
+[data-theme="pastel"] {
+  --bg: #f7f2f6;
+  --bg-elev: #efe7ee;
+  --surface: #fffafd;
+  --fg: #2c2733;
+  --fg-muted: #6b6475;
+  --fg-faint: #9b94a5;
+  --accent: #b5687f;
+  --accent-fg: #fffafd;
+  --accent-edge: #8a4860;
+  --border: rgba(44, 39, 51, 0.12);
+  --hairline: rgba(44, 39, 51, 0.08);
+  --btn-shadow: rgba(44, 39, 51, 0.18);
+  color-scheme: light;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  /* Themes cross-fade instead of snapping. */
+  transition: background-color 0.5s var(--ease-out-expo),
+    color 0.5s var(--ease-out-expo);
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--accent-fg);
+}
+
+/* Thin, theme-aware scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--fg-faint);
+  border-radius: 999px;
+  border: 3px solid var(--bg);
+}
+
+/* Focus visibility for keyboard users (a11y) */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+
+/* Page gutter + max width, used by every section */
+.shell {
+  width: 100%;
+  max-width: 1400px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+@media (min-width: 768px) {
+  .shell {
+    padding-inline: 3rem;
+  }
+}
+
+/* Small uppercase mono label (rationed - see CLAUDE.md) */
+.kicker {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* Fine film grain overlay for the cinematic theme. */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- Tactile, pressable buttons (shared across the app) ----
+   Color-blind safe: a button is read by SHAPE + a visible bottom edge +
+   a drop shadow, never by hue alone. The layered shadow makes it look
+   physically raised; it presses DOWN on :active so it "clicks". */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.95rem 1.6rem;
+  min-height: 3rem; /* >= 44px touch target */
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.12s var(--ease-out-expo),
+    box-shadow 0.12s var(--ease-out-expo), background-color 0.2s, color 0.2s;
+}
+.btn:active {
+  transform: translateY(3px);
+}
+.btn-primary {
+  background-color: var(--accent);
+  color: var(--accent-fg);
+  border: 1px solid var(--accent-edge);
+  box-shadow: 0 4px 0 0 var(--accent-edge), 0 12px 24px -8px var(--btn-shadow);
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 0 var(--accent-edge), 0 16px 30px -8px var(--btn-shadow);
+}
+.btn-primary:active {
+  box-shadow: 0 1px 0 0 var(--accent-edge), 0 6px 14px -8px var(--btn-shadow);
+}
+.btn-ghost {
+  background-color: var(--surface);
+  color: var(--fg);
+  border: 1.5px solid color-mix(in srgb, var(--fg) 55%, transparent);
+  box-shadow: 0 4px 0 0 var(--border), 0 10px 20px -10px var(--btn-shadow);
+}
+.btn-ghost:hover {
+  transform: translateY(-1px);
+  background-color: var(--bg-elev);
+  box-shadow: 0 5px 0 0 var(--border), 0 14px 26px -10px var(--btn-shadow);
+}
+.btn-ghost:active {
+  box-shadow: 0 1px 0 0 var(--border), 0 6px 12px -10px var(--btn-shadow);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Isometric monument art (same markup the generated portfolio uses, so the
+   builder's home art and the portfolio fallback art look identical). */
+.art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.isobg {
+  fill: var(--bg-elev);
+}
+.iso-glow {
+  fill: var(--accent);
+  opacity: 0.16;
+}
+.iso-bloom {
+  fill: var(--accent);
+  opacity: 0.22;
+}
+.iso-shadow {
+  fill: #000;
+  opacity: 0.2;
+}
+.iso-ao {
+  fill: #000;
+  opacity: 0.26;
+}
+.iso-refl {
+  opacity: 0.16;
+}
+.iso-hl {
+  fill: none;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.75;
+}
+.iso-hlA {
+  stroke: color-mix(in srgb, var(--accent), #fff 55%);
+}
+.iso-hlN {
+  stroke: color-mix(in srgb, var(--fg) 52%, var(--bg));
+}
+.iso-grid {
+  stroke: color-mix(in srgb, var(--accent) 60%, var(--fg));
+  stroke-width: 1;
+  opacity: 0.16;
+  fill: none;
+}
+.iso-e {
+  stroke: color-mix(in srgb, var(--fg) 16%, transparent);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.fA1 {
+  fill: var(--accent);
+}
+.fA2 {
+  fill: color-mix(in srgb, var(--accent), #000 17%);
+}
+.fA3 {
+  fill: color-mix(in srgb, var(--accent), #000 35%);
+}
+.fN1 {
+  fill: color-mix(in srgb, var(--fg) 22%, var(--bg));
+}
+.fN2 {
+  fill: color-mix(in srgb, color-mix(in srgb, var(--fg) 22%, var(--bg)), #000 16%);
+}
+.fN3 {
+  fill: color-mix(in srgb, color-mix(in srgb, var(--fg) 22%, var(--bg)), #000 34%);
+}
+.iso-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  opacity: 0.8;
+}
+.iso-ring2 {
+  fill: var(--accent);
+  opacity: 0.06;
+}
+.iso-dot {
+  fill: var(--accent);
+}
+.float0,
+.float1,
+.float2,
+.float3,
+.float4,
+.float5 {
+  animation: isofloat 7s ease-in-out infinite;
+}
+.float0,
+.float2,
+.float4 {
+  animation-duration: 8.4s;
+}
+.float1 {
+  animation-delay: -1.1s;
+}
+.float2 {
+  animation-delay: -2.3s;
+}
+.float3 {
+  animation-delay: -3.4s;
+}
+.float4 {
+  animation-delay: -4.6s;
+}
+.float5 {
+  animation-delay: -5.7s;
+}
+@keyframes isofloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-11px);
+  }
+}
+
+/* Reduced motion: collapse everything to instant + remove smooth scroll. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
