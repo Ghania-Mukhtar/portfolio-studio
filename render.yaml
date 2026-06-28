@@ -1,0 +1,23 @@
+# Render Blueprint for Portfolio Studio (free, persistent Node server).
+# Deploy: https://dashboard.render.com  ->  New  ->  Blueprint  ->  pick this repo.
+# Render runs the app as a real Node server (next start), so the long Claude
+# generation in /api/generate and /api/intake has no per-request timeout.
+#
+# The two secrets are marked sync:false, so Render asks you to paste them at
+# deploy time and keeps them out of the repo. AIRTABLE_BASE_ID / AIRTABLE_TABLE
+# are NOT needed: they default to your base/table in lib/airtable.ts.
+services:
+  - type: web
+    name: portfolio-studio
+    runtime: node
+    plan: free
+    branch: main
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: AIRTABLE_TOKEN
+        sync: false
+      - key: ANTHROPIC_MODEL
+        value: claude-sonnet-4-6
